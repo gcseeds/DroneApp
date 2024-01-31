@@ -21,6 +21,6 @@ class Model {
     @Column
     String manufacturer
 
-    @OneToMany(mappedBy = "model_id")
+    @OneToMany(mappedBy = "model")
     List<Sensor> sensors;
 }

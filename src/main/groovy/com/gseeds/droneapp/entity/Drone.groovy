@@ -24,7 +24,7 @@ class Drone {
     String registration
 
     @ManyToOne
-    @JoinColumn(name="model_id", nullable=false)
+    @JoinColumn(name="model", nullable=false)
     Model model
 
     @Enumerated(EnumType.STRING)

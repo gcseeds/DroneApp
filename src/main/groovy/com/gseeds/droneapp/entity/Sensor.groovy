@@ -20,5 +20,8 @@ class Sensor {
     String name
 
     @Enumerated(EnumType.STRING)
-    SensorType sensoryType
+    SensorType sensorType
+
+    @Column
+    Integer model
 }
