@@ -1,6 +1,6 @@
 package com.gseeds.droneapp.repository
 
-import com.gseeds.droneapp.entity.Model
+import com.gseeds.droneapp.model.entity.Model
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

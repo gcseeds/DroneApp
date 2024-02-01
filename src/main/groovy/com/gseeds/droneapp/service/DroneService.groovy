@@ -1,13 +1,13 @@
 package com.gseeds.droneapp.service
 
-import com.gseeds.droneapp.entity.Drone
+import com.gseeds.droneapp.model.dto.DroneDto
 
 interface DroneService {
-    List<Drone> findAll()
+    List<DroneDto> findAll()
 
-    Drone findById(Integer droneId)
+    DroneDto findById(Integer droneId)
 
-    Drone findByRegistration(String droneRegistration)
+    DroneDto findByRegistration(String droneRegistration)
 
-    Drone saveDrone(Drone droneToSave)
+    DroneDto saveDrone(DroneDto droneToSave)
 }

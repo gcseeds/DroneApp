@@ -1,6 +1,6 @@
 package com.gseeds.droneapp.service
 
-import com.gseeds.droneapp.entity.Model
+import com.gseeds.droneapp.model.entity.Model
 
 interface ModelService {
     List<Model> findAll()

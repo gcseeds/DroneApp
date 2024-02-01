@@ -1,6 +1,7 @@
 package com.gseeds.droneapp.controller
 
-import com.gseeds.droneapp.entity.Drone
+import com.gseeds.droneapp.model.dto.DroneDto
+import com.gseeds.droneapp.model.entity.Drone
 import com.gseeds.droneapp.service.DroneService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
@@ -16,12 +17,12 @@ class DroneController {
     DroneService service
 
     @GetMapping
-    List<Drone> getAllDrones(){
+    List<DroneDto> getAllDrones(){
         service.findAll();
     }
 
     @PostMapping
-    Drone saveDrone(@RequestBody Drone drone){
+    DroneDto saveDrone(@RequestBody DroneDto drone){
         service.saveDrone drone
     }
 }

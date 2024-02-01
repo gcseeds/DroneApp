@@ -15,12 +15,20 @@ CREATE TABLE IF NOT EXISTS MODEL (
 
 CREATE TABLE IF NOT EXISTS SENSOR (
    id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-   name varchar(255) NOT NULL UNIQUE,
+   name varchar(255) NOT NULL,
    sensor_type enum ('visible_light',
                     'infared',
                     'lidar',
                     'radar',
                     'millimeter',
                     'acoustic') NOT NULL,
-   model_id int NOT NULL
+   drone_id int NOT NULL
 );
+
+ALTER TABLE drone
+    ADD FOREIGN KEY fk_drone_model (model_id) references model(id);
+
+ALTER TABLE sensor
+    ADD FOREIGN KEY fk_sensor_drone (drone_id) references drone(id);
+
+CREATE INDEX idx2_sensor_type ON sensor(sensor_type);

@@ -1,6 +1,6 @@
 package com.gseeds.droneapp.service.impl
 
-import com.gseeds.droneapp.entity.Model
+import com.gseeds.droneapp.model.entity.Model
 import com.gseeds.droneapp.repository.ModelRepository
 import com.gseeds.droneapp.service.ModelService
 import org.springframework.beans.factory.annotation.Autowired

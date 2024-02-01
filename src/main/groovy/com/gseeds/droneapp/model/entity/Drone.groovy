@@ -1,5 +1,6 @@
-package com.gseeds.droneapp.entity
+package com.gseeds.droneapp.model.entity
 
+import com.gseeds.droneapp.model.enums.Status
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType

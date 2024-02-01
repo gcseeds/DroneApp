@@ -1,4 +1,4 @@
-package com.gseeds.droneapp.entity
+package com.gseeds.droneapp.model.enums
 
 enum Status {
     ready,
