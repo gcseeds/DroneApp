@@ -25,13 +25,13 @@ class Drone {
     String registration
 
     @ManyToOne
-    @JoinColumn(name="model", nullable=false)
+    @JoinColumn(name="model_id", nullable=false)
     Model model
 
     @Enumerated(EnumType.STRING)
     Status status
 
-    @OneToMany(mappedBy = "drone")
+    @OneToMany(mappedBy = "droneId")
     List<Sensor> sensors;
 
     @UpdateTimestamp

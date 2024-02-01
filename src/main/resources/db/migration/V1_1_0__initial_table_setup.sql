@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS DRONE (
     id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     registration varchar(255) NOT NULL UNIQUE,
-    model int,
+    model_id int,
     status enum ('ready','repairing','on_mission') NOT NULL,
     created_date DATETIME,
     modified_date DATETIME
@@ -22,5 +22,5 @@ CREATE TABLE IF NOT EXISTS SENSOR (
                     'radar',
                     'millimeter',
                     'acoustic') NOT NULL,
-   model int NOT NULL
+   model_id int NOT NULL
 );

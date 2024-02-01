@@ -1,4 +1,4 @@
 ALTER TABLE SENSOR ADD COLUMN IF NOT EXISTS (
-    drone int not null
+    drone_id int not null
     );
-ALTER TABLE SENSOR DROP COLUMN IF EXISTS model;
+ALTER TABLE SENSOR DROP COLUMN IF EXISTS model_id;
