@@ -23,5 +23,5 @@ class Sensor {
     SensorType sensorType
 
     @Column
-    Integer model
+    Integer drone
 }

@@ -20,7 +20,4 @@ class Model {
 
     @Column
     String manufacturer
-
-    @OneToMany(mappedBy = "model")
-    List<Sensor> sensors;
 }
