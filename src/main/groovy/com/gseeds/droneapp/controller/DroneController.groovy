@@ -1,11 +1,13 @@
 package com.gseeds.droneapp.controller
 
 import com.gseeds.droneapp.model.dto.DroneDto
+import com.gseeds.droneapp.model.dto.DroneStatusDto
 import com.gseeds.droneapp.model.enums.SensorType
 import com.gseeds.droneapp.model.enums.Status
 import com.gseeds.droneapp.service.DroneService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -16,7 +18,7 @@ import org.springframework.web.server.ResponseStatusException
 import org.springframework.http.HttpStatus
 
 @RestController
-@RequestMapping('drones')
+@RequestMapping('droneapp/api')
 class DroneController {
     @Autowired
     DroneService service
@@ -31,14 +33,14 @@ class DroneController {
 //        service.findByModelName(modelName)
 //    }
 
-    @GetMapping
+    @GetMapping('/drones')
     List<DroneDto> getDrones(@RequestParam(name = "status", required = false) Status status,
                              @RequestParam(name = "sensorType", required = false) SensorType sensorType,
                              @RequestParam(name = "modelName",required = false) String modelName){
         service.findByStatusSensorTypeModelName(status, sensorType, modelName)
     }
 
-    @GetMapping('/{droneRegistration}')
+    @GetMapping('/drones/{droneRegistration}')
     DroneDto getDroneByRegistration(@PathVariable(name = 'droneRegistration', required = true) String droneRegistration){
         try{
             service.findByRegistration(droneRegistration)
@@ -48,8 +50,29 @@ class DroneController {
         }
     }
 
-    @PostMapping
+    @PostMapping('/drones')
     DroneDto saveDrone(@RequestBody DroneDto drone){
         service.saveDrone drone
+    }
+
+    @GetMapping('/status/{droneRegistration}')
+    DroneStatusDto getDroneStatus(@PathVariable(name = 'droneRegistration') String droneRegistration){
+        service.getDroneStatus(droneRegistration)
+    }
+
+    @PatchMapping('/status/{droneRegistration}')
+    DroneStatusDto updateDroneStatus(@RequestBody DroneStatusDto statusDto,
+                                     @PathVariable(name = 'droneRegistration') String droneRegistration){
+        service.updateDroneStatus(droneRegistration, statusDto)
+    }
+
+    @GetMapping('/statusTypes')
+    List<String> getAllStatusTypes(){
+        Status.values().toList().stream().map {it.toString()}.toList()
+    }
+
+    @GetMapping('/sensorTypes')
+    List<String> getAllSensorTypes(){
+        SensorType.values().toList().stream().map {it.toString()}.toList()
     }
 }

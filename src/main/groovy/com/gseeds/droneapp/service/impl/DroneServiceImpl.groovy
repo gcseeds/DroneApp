@@ -1,6 +1,7 @@
 package com.gseeds.droneapp.service.impl
 
 import com.gseeds.droneapp.model.dto.DroneDto
+import com.gseeds.droneapp.model.dto.DroneStatusDto
 import com.gseeds.droneapp.model.entity.Drone
 import com.gseeds.droneapp.model.enums.SensorType
 import com.gseeds.droneapp.model.enums.Status
@@ -84,5 +85,19 @@ class DroneServiceImpl implements  DroneService{
         System.out.println("Model name ${modelName}")
         droneRepository.findAllByStatusAndSensorTypeAndModelName(status, sensorType, modelName)
             .stream().map {DroneMapper.mapEntity(it)}.toList()
+    }
+
+    @Override
+    DroneStatusDto updateDroneStatus(String registration, DroneStatusDto statusDto) {
+        Drone entity = droneRepository.findByRegistration(registration).orElseThrow()
+        entity.setStatus(statusDto.status)
+        entity = droneRepository.save(entity)
+        new DroneStatusDto(registration: entity.getRegistration(), status: entity.getStatus())
+    }
+
+    @Override
+    DroneStatusDto getDroneStatus(String registration) {
+        Drone entity = droneRepository.findByRegistration(registration).orElseThrow()
+        new DroneStatusDto(registration: entity.getRegistration(), status: entity.getStatus())
     }
 }
