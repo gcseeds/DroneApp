@@ -1,3 +1,5 @@
+
+let fetchedDrones;
 function getAllDrones(){
     fetch("http://localhost:8080/droneapp/api/drones", {mode: "cors"})
         .then((response) => {
@@ -67,17 +69,30 @@ function populateStatusTypeSelect(data){
 }
 
 function populateDroneTable(){
-    fetch("http://localhost:8080/droneapp/api/drones", {mode: "cors"})
+    const droneUrl = new URL("http://localhost:8080/droneapp/api/drones");
+
+    const statusSelect = document.getElementById("selectStatus");
+    if (0 < statusSelect.selectedIndex){
+        droneUrl.searchParams.append("status", statusSelect.value);
+    }
+
+    const sensorSelect = document.getElementById("selectSensor");
+    if (0 < sensorSelect.selectedIndex){
+        droneUrl.searchParams.append("sensorType", sensorSelect.value);
+    }
+
+    fetch(droneUrl, {mode: "cors"})
         .then((response) => {
             if (response.ok) {
                 return response.json();
             } else {
-                throw new Error("Fetch drones failed.")
+                throw new Error("Fetch drones failed. " + response.status)
             }
         })
         .then(data => {
             console.log(data);
-            loadDroneDataInTable(data);
+            fetchedDrones = data;
+            loadDroneDataInTable(fetchedDrones);
         })
 }
 function loadDroneDataInTable(data){
