@@ -11,7 +11,8 @@
 <div>
     <label for="selectSensor"></label><select id="selectSensor"><option>Choose a sensor</option></select>
     <label for="selectStatus"></label><select id="selectStatus"><option>Choose a drone status</option></select>
-    <button onclick="populateDroneTable()">Click</button>
+    <label for="selectModel"></label><select id="selectModel"><option>Choose a drone model</option></select>
+    <button onclick="populateDroneTable()">Get Drones</button>
     <div id="dronesTableDiv">
         <table id="dronesTable">
             <thead>
@@ -42,6 +43,7 @@
 <script>
     populateSensorTypes();
     populateStatusTypes();
+    populateModelNames()
 </script>
 </body>
 </html>

@@ -68,6 +68,32 @@ function populateStatusTypeSelect(data){
     }
 }
 
+function populateModelNames(){
+    fetch("http://localhost:8080/droneapp/api/models", {mode: "cors"})
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error("Fetch statusTypes failed.")
+            }
+        })
+        .then(data => {
+            console.log(data);
+            populateModelNameSelect(data)
+        })
+}
+function populateModelNameSelect(data){
+    let select = document.getElementById("selectModel");
+
+    for(let i = 0; i < data.length; i++) {
+        let opt = data[i];
+        let el = document.createElement("option");
+        el.textContent = opt.name;
+        el.value = opt.name;
+        select.add(el);
+    }
+}
+
 function populateDroneTable(){
     const droneUrl = new URL("http://localhost:8080/droneapp/api/drones");
 
@@ -79,6 +105,11 @@ function populateDroneTable(){
     const sensorSelect = document.getElementById("selectSensor");
     if (0 < sensorSelect.selectedIndex){
         droneUrl.searchParams.append("sensorType", sensorSelect.value);
+    }
+
+    const modelSelect = document.getElementById("selectModel");
+    if (0 < modelSelect.selectedIndex){
+        droneUrl.searchParams.append("modelName", modelSelect.value);
     }
 
     fetch(droneUrl, {mode: "cors"})
@@ -96,18 +127,19 @@ function populateDroneTable(){
         })
 }
 function loadDroneDataInTable(data){
-    const tableData = data.map(value => {
+    document.getElementById("dronesTableBody").innerHTML = data.map(value => {
         return (
             `<tr>
                 <td>${value.registration}</td>
                 <td>${value.status}</td>
                 <td>${value.model.name}</td>
-                <td>${value.sensors.map(sensor => {return sensor.sensorType;}).join(',')}</td>
+                <td>${value.sensors.map(sensor => {
+                return sensor.sensorType;
+            }).join(',')}</td>
                 <td>${value.weightKg}</td>
                 <td>${value.latitude}</td>
                 <td>${value.longitude}</td>
             </tr>`
         );
     }).join('');
-    document.getElementById("dronesTableBody").innerHTML = tableData;
 }
