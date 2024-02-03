@@ -2,9 +2,11 @@ package com.gseeds.droneapp.controller
 
 import com.gseeds.droneapp.model.dto.DroneDto
 import com.gseeds.droneapp.model.dto.DroneStatusDto
+import com.gseeds.droneapp.model.dto.ModelDto
 import com.gseeds.droneapp.model.enums.SensorType
 import com.gseeds.droneapp.model.enums.Status
 import com.gseeds.droneapp.service.DroneService
+import com.gseeds.droneapp.service.ModelService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
@@ -24,6 +26,9 @@ import org.springframework.http.HttpStatus
 class DroneController {
     @Autowired
     DroneService service
+
+    @Autowired
+    ModelService modelService
 
 //    @GetMapping
 //    List<DroneDto> getAllDrones(){
@@ -78,5 +83,10 @@ class DroneController {
     @GetMapping('/sensorTypes')
     List<String> getAllSensorTypes(){
         SensorType.values().toList().stream().map {it.toString()}.toList()
+    }
+
+    @GetMapping('/models')
+    List<ModelDto> getAllModels(){
+        modelService.findAllDto()
     }
 }
