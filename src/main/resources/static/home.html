@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>DroneApp Home</title>
     <link rel="stylesheet" href="droneapp.css" />
-
+    <link rel="stylesheet" href="leaflet.css" />
+    <script src="leaflet.js"></script>
 </head>
 <body>
 <script src="homescript.js"></script>
@@ -32,18 +33,16 @@
     <div id="chartDiv">
 
     </div>
-    <div id="mapDiv">
+    <div id="map">
 
     </div>
     <!--    <canvas id="myChart"></canvas>-->
 </div>
 
-<!--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
-
 <script>
     populateSensorTypes();
     populateStatusTypes();
-    populateModelNames()
+    populateModelNames();
 </script>
 </body>
 </html>

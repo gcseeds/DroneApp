@@ -1,5 +1,6 @@
 
 let fetchedDrones;
+var map;
 function getAllDrones(){
     fetch("http://localhost:8080/droneapp/api/drones", {mode: "cors"})
         .then((response) => {
@@ -124,6 +125,7 @@ function populateDroneTable(){
             console.log(data);
             fetchedDrones = data;
             loadDroneDataInTable(fetchedDrones);
+            setUpMap(data);
         })
 }
 function loadDroneDataInTable(data){
@@ -142,4 +144,30 @@ function loadDroneDataInTable(data){
             </tr>`
         );
     }).join('');
+}
+
+function setUpMap(data){
+    if (map !== undefined) {
+        map.off();
+        map.remove(); }
+    let lon = -84.38633;
+    let lat = 33.753746;
+    if (0 < data.length){
+        lat = data[0].latitude;
+        lon = data[0].longitude;
+    }
+    map = L.map('map').setView([lat, lon], 13);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    data.forEach(drone =>{
+        const marker = L.marker([drone.latitude, drone.longitude]).addTo(map);
+        marker.bindPopup(drone.registration).openPopup();
+    })
+}
+
+function mapDrones(data){
+
 }
