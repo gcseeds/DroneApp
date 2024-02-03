@@ -67,5 +67,32 @@ function populateStatusTypeSelect(data){
 }
 
 function populateDroneTable(){
-
+    fetch("http://localhost:8080/droneapp/api/drones", {mode: "cors"})
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error("Fetch drones failed.")
+            }
+        })
+        .then(data => {
+            console.log(data);
+            loadDroneDataInTable(data);
+        })
+}
+function loadDroneDataInTable(data){
+    const tableData = data.map(value => {
+        return (
+            `<tr>
+                <td>${value.registration}</td>
+                <td>${value.status}</td>
+                <td>${value.model.name}</td>
+                <td>${value.sensors.map(sensor => {return sensor.sensorType;}).join(',')}</td>
+                <td>${value.weightKg}</td>
+                <td>${value.latitude}</td>
+                <td>${value.longitude}</td>
+            </tr>`
+        );
+    }).join('');
+    document.getElementById("dronesTableBody").innerHTML = tableData;
 }

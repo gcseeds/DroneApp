@@ -3,16 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>DroneApp Home</title>
+    <link rel="stylesheet" href="droneapp.css" />
+
 </head>
 <body>
+<script src="homescript.js"></script>
 <div>
     <label for="selectSensor"></label><select id="selectSensor"><option>Choose a sensor</option></select>
     <label for="selectStatus"></label><select id="selectStatus"><option>Choose a drone status</option></select>
     <button onclick="populateDroneTable()">Click</button>
-    <div id="dronesTable"></div>
+    <div id="dronesTableDiv">
+        <table id="dronesTable">
+            <thead>
+                <tr>
+                    <th>Registration</th>
+                    <th>Status</th>
+                    <th>Model</th>
+                    <th>Sensor types</th>
+                    <th>Weight (kg)</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                </tr>
+            </thead>
+            <tbody id="dronesTableBody"></tbody>
+        </table>
+    </div>
     <!--    <canvas id="myChart"></canvas>-->
 </div>
-<script src="homescript.js"></script>
+
 <!--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
 
 <script>
