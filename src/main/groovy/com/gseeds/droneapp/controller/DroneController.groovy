@@ -6,6 +6,7 @@ import com.gseeds.droneapp.model.enums.SensorType
 import com.gseeds.droneapp.model.enums.Status
 import com.gseeds.droneapp.service.DroneService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.http.HttpStatus
 
+@CrossOrigin(origins = "http://localhost")
 @RestController
 @RequestMapping('droneapp/api')
 class DroneController {

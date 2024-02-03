@@ -19,5 +19,5 @@ class Model {
     String name
 
     @Column
-    String manufacturer
+    BigDecimal weightKg
 }

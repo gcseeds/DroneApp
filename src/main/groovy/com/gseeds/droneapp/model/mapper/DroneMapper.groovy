@@ -8,7 +8,10 @@ class DroneMapper {
         new DroneDto(registration: entity.registration,
                 status: entity.status,
                 model: ModelMapper.mapEntity(entity.model),
-                sensors: entity.sensors.stream().map {SensorMapper.mapEntity(it)}.toList()
+                sensors: entity.sensors.stream().map {SensorMapper.mapEntity(it)}.toList(),
+                weightKg: entity.weightKg,
+                latitude: entity.latitude,
+                longitude: entity.longitude
         )
     }
 
@@ -16,7 +19,10 @@ class DroneMapper {
         new Drone(registration: dto.registration,
                 status: dto.status,
                 model: ModelMapper.mapDto(dto.model),
-                sensors: dto.sensors.stream().map {SensorMapper.mapDto(it)}.toList()
+                sensors: dto.sensors.stream().map {SensorMapper.mapDto(it)}.toList(),
+                weightKg: dto.weightKg,
+                latitude: dto.latitude,
+                longitude: dto.longitude
         )
     }
 

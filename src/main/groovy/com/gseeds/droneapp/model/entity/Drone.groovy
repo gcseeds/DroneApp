@@ -35,6 +35,15 @@ class Drone {
     @OneToMany(mappedBy = "droneId")
     List<Sensor> sensors;
 
+    @Column
+    BigDecimal latitude
+
+    @Column
+    BigDecimal longitude
+
+    @Column
+    BigDecimal weightKg
+
     @UpdateTimestamp
     @Column
     Date modifiedDate;

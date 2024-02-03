@@ -11,4 +11,7 @@ class DroneDto {
     @NotNull(message = "Drone must have a model.")
     ModelDto model
     List<SensorDto> sensors
+    BigDecimal weightKg
+    BigDecimal latitude
+    BigDecimal longitude
 }

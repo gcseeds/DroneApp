@@ -7,16 +7,11 @@ import com.gseeds.droneapp.model.enums.SensorType
 import com.gseeds.droneapp.model.enums.Status
 import com.gseeds.droneapp.model.mapper.DroneMapper
 import com.gseeds.droneapp.repository.DroneRepository
-import com.gseeds.droneapp.repository.DroneSpecifications
 import com.gseeds.droneapp.repository.ModelRepository
 import com.gseeds.droneapp.repository.SensorRepository
 import com.gseeds.droneapp.service.DroneService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.domain.Example
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import org.springframework.web.server.ResponseStatusException
 
 @Service
 class DroneServiceImpl implements  DroneService{
@@ -58,15 +53,12 @@ class DroneServiceImpl implements  DroneService{
         //Save model
         var foundModel = modelRepository.findByNameIgnoreCase(entity.model.name)
         if (foundModel.isPresent()){
-            if (!(foundModel.get().manufacturer == entity.model.manufacturer)){
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "Manufacturer name does not match record.")
-            }
-            else entity.setModel(foundModel.get())
+            entity.setModel(foundModel.get())
         }
         else{
             entity.setModel(modelRepository.save(entity.model))
         }
-
+        if (null == entity.weightKg) entity.weightKg = entity.model.weightKg
         Drone savedEntity = droneRepository.save entity
         savedEntity.sensors = entity.sensors.stream().map {it.setDroneId(savedEntity.id)
             sensorRepository.save(it)}.toList()
@@ -91,6 +83,8 @@ class DroneServiceImpl implements  DroneService{
     DroneStatusDto updateDroneStatus(String registration, DroneStatusDto statusDto) {
         Drone entity = droneRepository.findByRegistration(registration).orElseThrow()
         entity.setStatus(statusDto.status)
+        if (null != statusDto.latitude) entity.setLatitude(statusDto.latitude)
+        if (null != statusDto.longitude) entity.setLongitude(statusDto.longitude)
         entity = droneRepository.save(entity)
         new DroneStatusDto(registration: entity.getRegistration(), status: entity.getStatus())
     }
@@ -98,6 +92,9 @@ class DroneServiceImpl implements  DroneService{
     @Override
     DroneStatusDto getDroneStatus(String registration) {
         Drone entity = droneRepository.findByRegistration(registration).orElseThrow()
-        new DroneStatusDto(registration: entity.getRegistration(), status: entity.getStatus())
+        new DroneStatusDto(registration: entity.getRegistration(),
+                status: entity.getStatus(),
+                latitude: entity.getLatitude(),
+                longitude: entity.getLongitude())
     }
 }

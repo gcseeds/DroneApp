@@ -5,7 +5,8 @@ import jakarta.validation.constraints.NotNull
 
 class DroneStatusDto {
     String registration
-
     @NotNull
     Status status
+    BigDecimal latitude
+    BigDecimal longitude
 }
