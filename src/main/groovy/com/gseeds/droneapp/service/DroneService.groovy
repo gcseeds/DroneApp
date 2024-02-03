@@ -16,9 +16,11 @@ interface DroneService {
 
     List<DroneDto> findByModelName(String modelName)
 
-    List<DroneDto> findByStatusSensorTypeModelName(Status statusString,
+    List<DroneDto> findByStatusSensorTypeModelNameWeight(Status statusString,
                                                    SensorType sensorType,
-                                                   String modelName)
+                                                   String modelName,
+                                                   BigDecimal maxWeight,
+                                                   BigDecimal minWeight)
 
     DroneStatusDto updateDroneStatus(String registration, DroneStatusDto statusDto)
 

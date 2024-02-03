@@ -71,11 +71,18 @@ class DroneServiceImpl implements  DroneService{
     }
 
     @Override
-    List<DroneDto> findByStatusSensorTypeModelName(Status status, SensorType sensorType, String modelName) {
+    List<DroneDto> findByStatusSensorTypeModelNameWeight(Status status,
+                                                   SensorType sensorType,
+                                                   String modelName,
+                                                   BigDecimal maxWeight,
+                                                   BigDecimal minWeight) {
         System.out.println("Status ${status}")
         System.out.println("SensorType ${sensorType}")
         System.out.println("Model name ${modelName}")
-        droneRepository.findAllByStatusAndSensorTypeAndModelName(status, sensorType, modelName)
+        droneRepository.findAllByStatusAndSensorTypeAndModelNameWeight(status,
+                sensorType, modelName,
+                maxWeight,
+                minWeight)
             .stream().map {DroneMapper.mapEntity(it)}.toList()
     }
 

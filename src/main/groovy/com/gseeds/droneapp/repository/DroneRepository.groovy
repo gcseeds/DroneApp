@@ -23,8 +23,12 @@ INNER JOIN Sensor s ON s.droneId = d.id
 INNER JOIN Model m ON m.id = d.model.id
 WHERE (:sVal is null or d.status = :sVal) 
 AND (:sType is null or s.sensorType = :sType)
-AND (:nVal is null or m.name = :nVal)''')
-    List<Drone> findAllByStatusAndSensorTypeAndModelName(@Param("sVal") Status status,
-                                                         @Param("sType") SensorType sensorType,
-                                                         @Param("nVal") String modelName);
+AND (:nVal is null or m.name = :nVal)
+AND (:maxW is null or d.weightKg <= :maxW)
+AND (:minW is null or d.weightKg >= :minW)''')
+    List<Drone> findAllByStatusAndSensorTypeAndModelNameWeight(@Param("sVal") Status status,
+                                                               @Param("sType") SensorType sensorType,
+                                                               @Param("nVal") String modelName,
+                                                               @Param('maxW') BigDecimal maxWeight,
+                                                               @Param('minW') BigDecimal minWeight);
 }

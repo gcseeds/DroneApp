@@ -38,8 +38,10 @@ class DroneController {
     @GetMapping('/drones')
     List<DroneDto> getDrones(@RequestParam(name = "status", required = false) Status status,
                              @RequestParam(name = "sensorType", required = false) SensorType sensorType,
-                             @RequestParam(name = "modelName",required = false) String modelName){
-        service.findByStatusSensorTypeModelName(status, sensorType, modelName)
+                             @RequestParam(name = "modelName",required = false) String modelName,
+                             @RequestParam(name = "maxWeight",required = false) BigDecimal maxWeight,
+                             @RequestParam(name = "minWeight",required = false) BigDecimal minWeight){
+        service.findByStatusSensorTypeModelNameWeight(status, sensorType, modelName, maxWeight, minWeight)
     }
 
     @GetMapping('/drones/{droneRegistration}')
