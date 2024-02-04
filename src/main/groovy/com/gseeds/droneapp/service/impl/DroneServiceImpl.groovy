@@ -10,10 +10,12 @@ import com.gseeds.droneapp.repository.DroneRepository
 import com.gseeds.droneapp.repository.ModelRepository
 import com.gseeds.droneapp.repository.SensorRepository
 import com.gseeds.droneapp.service.DroneService
+import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
+@Transactional
 class DroneServiceImpl implements  DroneService{
     @Autowired
     DroneRepository droneRepository

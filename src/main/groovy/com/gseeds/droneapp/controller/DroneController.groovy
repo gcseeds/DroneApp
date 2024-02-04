@@ -3,12 +3,15 @@ package com.gseeds.droneapp.controller
 import com.gseeds.droneapp.model.dto.DroneDto
 import com.gseeds.droneapp.model.dto.DroneStatusDto
 import com.gseeds.droneapp.model.dto.ModelDto
+import com.gseeds.droneapp.model.dto.SensorDto
 import com.gseeds.droneapp.model.enums.SensorType
 import com.gseeds.droneapp.model.enums.Status
 import com.gseeds.droneapp.service.DroneService
 import com.gseeds.droneapp.service.ModelService
+import com.gseeds.droneapp.service.SensorService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.CrossOrigin
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -30,15 +33,8 @@ class DroneController {
     @Autowired
     ModelService modelService
 
-//    @GetMapping
-//    List<DroneDto> getAllDrones(){
-//        service.findAll();
-//    }
-
-//    @GetMapping
-//    List<DroneDto> getDronesByModelName(@RequestParam(name = "modelName") String modelName){
-//        service.findByModelName(modelName)
-//    }
+    @Autowired
+    SensorService sensorService;
 
     @GetMapping('/drones')
     List<DroneDto> getDrones(@RequestParam(name = "status", required = false) Status status,
@@ -64,15 +60,32 @@ class DroneController {
         service.saveDrone drone
     }
 
-    @GetMapping('/status/{droneRegistration}')
+    @GetMapping('/drones/{droneRegistration}/status')
     DroneStatusDto getDroneStatus(@PathVariable(name = 'droneRegistration') String droneRegistration){
         service.getDroneStatus(droneRegistration)
     }
 
-    @PatchMapping('/status/{droneRegistration}')
+    @PatchMapping('/drones/{droneRegistration}/status')
     DroneStatusDto updateDroneStatus(@RequestBody DroneStatusDto statusDto,
                                      @PathVariable(name = 'droneRegistration') String droneRegistration){
         service.updateDroneStatus(droneRegistration, statusDto)
+    }
+
+    @GetMapping('/drones/{droneRegistration}/sensors')
+    List<SensorDto> getDroneSensors(@PathVariable(name = 'droneRegistration') String droneRegistration){
+        service.findByRegistration(droneRegistration).sensors
+    }
+
+    @PostMapping('/drones/{droneRegistration}/sensors')
+    List<SensorDto> postDroneSensor(@RequestBody SensorDto sensorDto,
+                                    @PathVariable(name = 'droneRegistration') String droneRegistration){
+        sensorService.saveSensor(droneRegistration, sensorDto)
+    }
+
+    @DeleteMapping('/drones/{droneRegistration}/sensors/{sensorName}')
+    deleteSensor(@PathVariable(name = 'droneRegistration') String droneRegistration,
+                 @PathVariable(name = 'sensorName') String sensorName){
+        sensorService.deleteSensor(droneRegistration, sensorName)
     }
 
     @GetMapping('/statusTypes')

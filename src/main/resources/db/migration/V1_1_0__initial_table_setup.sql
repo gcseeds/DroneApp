@@ -26,9 +26,12 @@ CREATE TABLE IF NOT EXISTS SENSOR (
 );
 
 ALTER TABLE drone
-    ADD FOREIGN KEY fk_drone_model (model_id) references model(id);
+    ADD FOREIGN KEY fk_drone_model (model_id) references model(id) ON DELETE RESTRICT;
 
 ALTER TABLE sensor
-    ADD FOREIGN KEY fk_sensor_drone (drone_id) references drone(id);
+    ADD FOREIGN KEY fk_sensor_drone (drone_id) references drone(id) ON DELETE CASCADE;
+
+ALTER TABLE sensor
+    ADD UNIQUE uidx_sensor_name_drone_id (name, drone_id);
 
 CREATE INDEX idx2_sensor_type ON sensor(sensor_type);
