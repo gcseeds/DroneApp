@@ -26,6 +26,8 @@
 }
 #map { height: 400px; width: 400px}
 
+#chartDiv{height: 400px}
+
 ​
 body {
     margin: 0;

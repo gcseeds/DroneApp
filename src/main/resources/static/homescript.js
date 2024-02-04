@@ -1,6 +1,10 @@
-
 let fetchedDrones;
+let statusTypes;
+let modelNames;
+let sensorTypes;
 var map;
+let chart;
+
 function getAllDrones(){
     fetch("http://localhost:8080/droneapp/api/drones", {mode: "cors"})
         .then((response) => {
@@ -26,6 +30,7 @@ function populateSensorTypes(){
         })
         .then(data => {
             console.log(data);
+            sensorTypes = data;
             populateSensorTypeSelect(data);
         })
 }
@@ -53,6 +58,7 @@ function populateStatusTypes(){
         })
         .then(data => {
             console.log(data);
+            statusTypes = data;
             populateStatusTypeSelect(data)
         })
 }
@@ -80,6 +86,7 @@ function populateModelNames(){
         })
         .then(data => {
             console.log(data);
+            modelNames = data.map(model => model.name);
             populateModelNameSelect(data)
         })
 }
@@ -125,6 +132,7 @@ function populateDroneTable(){
             console.log(data);
             fetchedDrones = data;
             loadDroneDataInTable(fetchedDrones);
+            setUpChart(data);
             setUpMap(data);
         })
 }
@@ -168,6 +176,68 @@ function setUpMap(data){
     })
 }
 
-function mapDrones(data){
+function reloadChartFromStoredData(){
+    setUpChart(fetchedDrones);
+}
 
+function setUpChart(data){
+    const ctx = document.getElementById('myChart');
+    const dataField = document.getElementById("selectDataset").value;
+    const chartData = new Map();
+    let range;
+    let chartType;
+    if ("status" === dataField){
+        range = statusTypes;
+        chartType = "pie";
+    }
+    else if ("modelName" === dataField){
+        range = modelNames;
+        chartType = "bar";
+    }
+    else if ("sensorType" === dataField){
+        range = sensorTypes;
+        chartType = "bar";
+    }
+
+    range.forEach(item => chartData.set(item, 0));
+
+    data.forEach(drone =>{
+        let label;
+        if ("status" == dataField){
+            label = drone.status;
+            let currentVal = chartData.get(label);
+            chartData.set(label, ++currentVal);
+        }
+        else if ("modelName" == dataField){
+            label = drone.model.name;
+            let currentVal = chartData.get(label);
+            chartData.set(label, ++currentVal);
+        }
+        else if ("sensorType" == dataField){
+            drone.sensors.forEach(sensor =>{
+                label = sensor.sensorType;
+                let currentVal = chartData.get(label);
+                chartData.set(label, ++currentVal);
+            });
+        }
+    })
+
+    console.log(Array.from(chartData.values()));
+
+    if (undefined !== chart) chart.destroy();
+    chart = new Chart(ctx, {
+        type: chartType,
+        data: {
+            labels: Array.from(chartData.keys()),
+            datasets: [{
+                label: '# of drones',
+                data: Array.from(chartData.values()),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
 }
