@@ -14,7 +14,6 @@ class MvcConfiguration implements WebMvcConfigurer{
      void addViewControllers(final ViewControllerRegistry registry) {
         registry.addViewController("/home.html");
         registry.addViewController("/foo.html");
-
     }
 
     @Override

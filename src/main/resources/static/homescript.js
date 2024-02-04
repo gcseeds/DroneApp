@@ -149,6 +149,7 @@ function loadDroneDataInTable(data){
                 <td>${value.weightKg}</td>
                 <td>${value.latitude}</td>
                 <td>${value.longitude}</td>
+                <td>${"<a href = \"dronedetail.html?registration=" + value.registration + "\">details</a>"}</td>
             </tr>`
         );
     }).join('');

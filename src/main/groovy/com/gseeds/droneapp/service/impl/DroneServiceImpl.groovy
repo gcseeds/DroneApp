@@ -95,7 +95,10 @@ class DroneServiceImpl implements  DroneService{
         if (null != statusDto.latitude) entity.setLatitude(statusDto.latitude)
         if (null != statusDto.longitude) entity.setLongitude(statusDto.longitude)
         entity = droneRepository.save(entity)
-        new DroneStatusDto(registration: entity.getRegistration(), status: entity.getStatus())
+        new DroneStatusDto(registration: entity.getRegistration(),
+                status: entity.getStatus(),
+                latitude: entity.latitude,
+                longitude: entity.longitude)
     }
 
     @Override

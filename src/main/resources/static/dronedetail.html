@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Drone detail</title>
+    <link rel="stylesheet" href="droneapp.css" />
+    <link rel="stylesheet" href="leaflet.css" />
+    <script src="leaflet.js"></script>
+    <script src="homescript.js"></script>
+</head>
+<body>
+<div>
+    <h1 id="titleHeader">Detailed status for </h1>
+</div>
+
+<div id="mapdiv" class="content">
+    <div id="map"></div>
+</div>
+<div class="content">
+    <label for="selectStatus"></label><select id="selectStatus"></select>
+    <label for="textboxLatitude">Latitude</label><input type="text" id="textboxLatitude">
+    <label for="textboxLatitude">Longitude</label><input type="text" id="textboxLongitude">
+    <button onclick="onGetMyLocationClicked()">Set to my location</button>
+    <button onclick="updateStatus()">Update</button>
+</div>
+<script>
+    let fetchedDrone;
+    let mapDetail;
+    const urlParams = new URLSearchParams(window.location.search);
+    const droneRegistration = urlParams.get('registration');
+    populateStatusTypes();
+    fetch("http://localhost:8080/droneapp/api/drones/" + droneRegistration + "/status", {mode: "cors"})
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error("Fetch drone failed.")
+            }
+        })
+        .then(data => {
+            console.log(data);
+            fetchedDrone = data;
+            // setUpDetailTable(data);
+            document.getElementById("titleHeader").innerText += droneRegistration;
+            setUpMap(data);
+            setUpUpdateDiv(data);
+        })
+    function setUpDetailTable(drone){
+        document.getElementById("droneDetailTableBody").innerHTML = `<tr>
+                    <td>${drone.status}</td>
+                    <td>${drone.latitude}</td>
+                    <td>${drone.longitude}</td>
+                </tr>`;
+    }
+    function setUpMap(drone){
+        if (mapDetail !== undefined) {
+            mapDetail.off();
+            mapDetail.remove(); }
+        let lon = -84.38633;
+        let lat = 33.753746;
+        if (undefined !== drone){
+            lat = drone.latitude;
+            lon = drone.longitude;
+        }
+
+        mapDetail = L.map('map').setView([lat, lon], 13);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(mapDetail);
+
+        const marker = L.marker([drone.latitude, drone.longitude]).addTo(mapDetail);
+        marker.bindPopup(drone.registration).openPopup();
+    }
+
+    function setUpUpdateDiv(data){
+        document.getElementById("textboxLatitude").value = data.latitude;
+        document.getElementById("textboxLongitude").value = data.longitude;
+        document.getElementById("selectStatus").value = data.status;
+    }
+
+    function onGetMyLocationClicked(){
+        const successCallback = (position) => {
+            document.getElementById("textboxLatitude").value = position.coords.latitude;
+            document.getElementById("textboxLongitude").value = position.coords.longitude;
+        };
+
+        const errorCallback = (error) => {
+            console.log(error);
+        };
+
+        navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+
+    }
+    function updateStatus(){
+        fetch("http://localhost:8080/droneapp/api/drones/" + droneRegistration + "/status",
+            {
+                mode: "cors",
+                method: "PATCH",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    status: document.getElementById("selectStatus").value,
+                    latitude: document.getElementById("textboxLatitude").value,
+                    longitude: document.getElementById("textboxLongitude").value
+                })
+            })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Update drone failed.")
+                }
+            })
+            .then(data => {
+                console.log(data);
+                fetchedDrone = data;
+                // setUpDetailTable(data);
+                setUpMap(data);
+                setUpUpdateDiv(data);
+            })
+    }
+</script>
+</body>
+</html>
