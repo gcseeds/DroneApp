@@ -11,17 +11,17 @@
 </head>
 <body>
 <script src="homescript.js"></script>
-<div id="titlebar">
+<div id="titlebar" class="content">
     <h1>DroneApp RightDrone</h1>
 </div>
-<div>
+<div class="content">
     <h1>What drones do I have?</h1>
     <p>Select options to view drones.</p>
     <label for="selectSensor"></label><select id="selectSensor"><option>Choose a sensor</option></select>
     <label for="selectStatus"></label><select id="selectStatus"><option>Choose a drone status</option></select>
     <label for="selectModel"></label><select id="selectModel"><option>Choose a drone model</option></select>
     <button onclick="populateDroneTable()">Get Drones</button>
-    <div id="dronesTableDiv">
+    <div id="dronesTableDiv" class="content">
         <table id="dronesTable">
             <thead>
                 <tr>
@@ -37,21 +37,22 @@
             <tbody id="dronesTableBody"></tbody>
         </table>
     </div>
-    <div id="chartDiv">
-        <h1>What are my drones like?</h1>
-        <label for="selectDataset">Select independent variable:</label><select id="selectDataset" onclick="reloadChartFromStoredData()">
+</div>
+<div id="chartContainerDiv" class="content">
+    <h1>What are my drones like?</h1>
+    <label for="selectDataset">Select independent variable:</label><select id="selectDataset" onclick="reloadChartFromStoredData()">
         <option>sensorType</option>
         <option>modelName</option>
         <option>status</option>
-        </select>
+    </select>
+    <div id="chartDiv">
         <canvas id="myChart"></canvas>
     </div>
-    <div id="mapdiv">
-        <h1>Where are my drones?</h1>
-        <div id="map"></div>
-    </div>
 </div>
-
+<div id="mapdiv" class="content">
+    <h1>Where are my drones?</h1>
+    <div id="map"></div>
+</div>
 <script>
     populateSensorTypes();
     populateStatusTypes();

@@ -24,9 +24,9 @@
     background-color: #04AA6D;
     color: white;
 }
-#map { height: 400px; width: 400px}
+#map { height: 600px; width: 600px}
 
-#chartDiv{height: 400px}
+#chartDiv{height: 600px}
 
 ​
 body {
@@ -61,7 +61,6 @@ body {
 .content {
     background-color: #ddd;
     padding: 10px;
-    height: 200px; /* Should be removed. Only for demonstration */
 }
 
 /* Style the footer */
