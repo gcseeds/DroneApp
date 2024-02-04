@@ -2,7 +2,7 @@ let fetchedDrones;
 let statusTypes;
 let modelNames;
 let sensorTypes;
-var map;
+let map;
 let chart;
 
 function getAllDrones(){
@@ -203,17 +203,17 @@ function setUpChart(data){
 
     data.forEach(drone =>{
         let label;
-        if ("status" == dataField){
+        if ("status" === dataField){
             label = drone.status;
             let currentVal = chartData.get(label);
             chartData.set(label, ++currentVal);
         }
-        else if ("modelName" == dataField){
+        else if ("modelName" === dataField){
             label = drone.model.name;
             let currentVal = chartData.get(label);
             chartData.set(label, ++currentVal);
         }
-        else if ("sensorType" == dataField){
+        else if ("sensorType" === dataField){
             drone.sensors.forEach(sensor =>{
                 label = sensor.sensorType;
                 let currentVal = chartData.get(label);
