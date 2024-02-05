@@ -14,6 +14,10 @@ interface DroneService {
 
     DroneDto saveDrone(DroneDto droneToSave)
 
+    DroneDto updateDrone(String currentRegistration, DroneDto droneToUpdate)
+
+    deleteDrone(String droneRegistration)
+
     List<DroneDto> findByModelName(String modelName)
 
     List<DroneDto> findByStatusSensorTypeModelNameWeight(Status statusString,

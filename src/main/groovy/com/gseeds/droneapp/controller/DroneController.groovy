@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -34,7 +35,7 @@ class DroneController {
     ModelService modelService
 
     @Autowired
-    SensorService sensorService;
+    SensorService sensorService
 
     @GetMapping('/drones')
     List<DroneDto> getDrones(@RequestParam(name = "status", required = false) Status status,
@@ -51,13 +52,24 @@ class DroneController {
             service.findByRegistration(droneRegistration)
         }
         catch (NoSuchElementException noSuchElementException){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Drone not found", noSuchElementException);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Drone not found", noSuchElementException)
         }
     }
 
     @PostMapping('/drones')
     DroneDto saveDrone(@RequestBody DroneDto drone){
         service.saveDrone drone
+    }
+
+    @PutMapping('/drones/{droneRegistration}')
+    DroneDto updateDrone(@RequestBody DroneDto drone,
+                         @PathVariable(name = 'droneRegistration') String droneRegistration){
+        service.updateDrone(droneRegistration, drone)
+    }
+
+    @DeleteMapping('/drones/{droneRegistration}')
+    deleteDrone(@PathVariable(name = 'droneRegistration') String droneRegistration) {
+        service.deleteDrone(droneRegistration)
     }
 
     @GetMapping('/drones/{droneRegistration}/status')

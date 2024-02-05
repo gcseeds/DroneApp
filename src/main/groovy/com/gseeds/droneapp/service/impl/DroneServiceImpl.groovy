@@ -52,7 +52,26 @@ class DroneServiceImpl implements  DroneService{
     @Override
     DroneDto saveDrone(DroneDto droneToSave){
         Drone entity = DroneMapper.mapDto droneToSave
-        //Save model
+        DroneMapper.mapEntity(saveDroneEntity(entity))
+    }
+
+    @Override
+    DroneDto updateDrone(String currentRegistration, DroneDto droneToUpdate) {
+        Optional<Drone> currentEntity = droneRepository.findByRegistration(currentRegistration)
+        Drone newEntity = DroneMapper.mapDto(droneToUpdate)
+
+        if (currentEntity.isPresent()){
+            Drone entity = currentEntity.get()
+            newEntity.id = entity.id
+            (entity.sensors - newEntity.sensors)
+                    .forEach {sensorRepository.deleteAllByNameIgnoreCaseAndDroneId(it.name, entity.id)}
+            newEntity.sensors = (newEntity.sensors - entity.sensors)
+            System.out.println(newEntity.sensors.toListString())
+        }
+        DroneMapper.mapEntity(saveDroneEntity(newEntity))
+    }
+
+    Drone saveDroneEntity(Drone entity){
         var foundModel = modelRepository.findByNameIgnoreCase(entity.model.name)
         if (foundModel.isPresent()){
             entity.setModel(foundModel.get())
@@ -64,7 +83,12 @@ class DroneServiceImpl implements  DroneService{
         Drone savedEntity = droneRepository.save entity
         savedEntity.sensors = entity.sensors.stream().map {it.setDroneId(savedEntity.id)
             sensorRepository.save(it)}.toList()
-        DroneMapper.mapEntity(savedEntity)
+        savedEntity
+    }
+
+    @Override
+    def deleteDrone(String droneRegistration) {
+        droneRepository.deleteByRegistration(droneRegistration)
     }
 
     @Override

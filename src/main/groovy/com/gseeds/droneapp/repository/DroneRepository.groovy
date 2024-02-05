@@ -31,4 +31,5 @@ AND (:minW is null or d.weightKg >= :minW)''')
                                                                @Param("nVal") String modelName,
                                                                @Param('maxW') BigDecimal maxWeight,
                                                                @Param('minW') BigDecimal minWeight);
+    deleteByRegistration(String registration)
 }
