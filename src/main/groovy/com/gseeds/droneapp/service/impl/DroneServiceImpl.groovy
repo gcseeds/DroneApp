@@ -56,19 +56,16 @@ class DroneServiceImpl implements  DroneService{
     }
 
     @Override
-    DroneDto updateDrone(String currentRegistration, DroneDto droneToUpdate) {
-        Optional<Drone> currentEntity = droneRepository.findByRegistration(currentRegistration)
-        Drone newEntity = DroneMapper.mapDto(droneToUpdate)
-
-        if (currentEntity.isPresent()){
-            Drone entity = currentEntity.get()
-            newEntity.id = entity.id
-            (entity.sensors - newEntity.sensors)
-                    .forEach {sensorRepository.deleteAllByNameIgnoreCaseAndDroneId(it.name, entity.id)}
-            newEntity.sensors = (newEntity.sensors - entity.sensors)
-            System.out.println(newEntity.sensors.toListString())
+    DroneDto updateDrone(String currentRegistration, DroneDto dto) {
+        Drone currentEntity = droneRepository.findByRegistration(currentRegistration).get()
+        if(null != dto.registration) currentEntity.setRegistration(dto.registration)
+        if(null != dto.weightKg) currentEntity.setWeightKg(dto.weightKg)
+        if(null != dto.model && dto.model.name != currentEntity.model.name){
+            throw new Exception("Drone PATCH cannot change model")
         }
-        DroneMapper.mapEntity(saveDroneEntity(newEntity))
+        if (null != dto.latitude) currentEntity.latitude = dto.latitude
+        if (null != dto.longitude) currentEntity.longitude = dto.longitude
+        DroneMapper.mapEntity(saveDroneEntity(currentEntity))
     }
 
     Drone saveDroneEntity(Drone entity){

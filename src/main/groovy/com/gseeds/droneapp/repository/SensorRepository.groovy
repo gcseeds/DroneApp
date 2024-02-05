@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository
 interface SensorRepository extends JpaRepository<Sensor, Integer>{
     deleteAllByNameIgnoreCaseAndDroneId(String name, Integer droneId)
     List<Sensor> findByDroneId(Integer droneId)
+    deleteAllByDroneId(Integer droneId)
 }
